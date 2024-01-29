@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "algorithm": "cpp",
+        "cmath": "cpp",
+        "iostream": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "numbers": "cpp",
+        "numeric": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp"
+    },
+    "C_Cpp.default.cppStandard": "c++20"
+}
