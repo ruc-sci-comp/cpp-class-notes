@@ -110,7 +110,6 @@ pn.template.FastListTemplate(
         pn.Row(fig_container, description_pane),
     ],
     sidebar=[
-        sim_inputs_card,
         sim_data_card,
         sim_config_card
     ]

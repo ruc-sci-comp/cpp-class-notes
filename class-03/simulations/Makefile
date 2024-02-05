@@ -30,7 +30,7 @@ PYTHON_LD_FLAGS:=-Wl,-rpath,$(PYTHON_LIB_DIR) -L$(PYTHON_LIB_DIR) $(PYTHON_LIBS)
 $(TRGT_EXE): setup setup_bin $(OBJ)
 	$(CXX) $(OBJ) $(PYTHON_LD_FLAGS) -o $@
 
-dashboard: setup $(LIBOBJ)
+dashboard: setup $(TRGT_EXE)
 	python -m panel serve --allow-websocket-origin=* dashboard
 
 setup:
