@@ -28,12 +28,24 @@ state['angles'] = np.sign(state.v) * np.pi / 2.0
 time_steps = state.t.unique()
 state = state.groupby('t')
 
+
 discrete_player = pn.widgets.DiscretePlayer(
     name='Discrete Player',
     options=time_steps.tolist(),
     value=0,
-    interval=33
+    interval=33,
+    width_policy='max'
 )
+time_box = pn.widgets.TextInput(name='time (s)', disabled=True)
+fps_input = pn.widgets.IntSlider(name='FPS', start=1, end=30, step=1, value=30)
+
+
+@pn.depends(fps_input.param.value_throttled, watch=True)
+def update_fps(value):
+    discrete_player.interval = 1000//value
+    discrete_player.pause()
+    discrete_player.play()
+
 
 @pn.depends(discrete_player)
 def plot(value):
@@ -66,10 +78,6 @@ point_dmap = hv.DynamicMap(plot).opts(
     ylim=(-1,101)
 )
 
-time_box = pn.widgets.TextInput(name='time (s)', disabled=True)
-
-fps_input = pn.widgets.IntSlider(name='FPS', start=1, end=30, step=1, value=30)
-
 sim_data_card = pn.Card(
     time_box,
     collapsible=False,
@@ -83,17 +91,16 @@ sim_config_card = pn.Card(
 )
 
 description_pane = pn.pane.Markdown('''
-
 ### Inputs & Controls
 
-* Enable Trace - turns on a simple movement trace
 * FPS - frames per second, or how quickly we playback the simulation
 
 ### Usage
 
-* Click *Play* to start the simulation; then *Stop* to end the simulation. 
+* Use the player controls to play/pause the simulation at different speeds. 
 * Optionally, set the FPS to change the speed of the simulation.
 ''')
+
 
 pn.template.FastListTemplate(
     theme=pn.template.DarkTheme,

@@ -54,9 +54,9 @@ auto main() -> int
 
     // This is our main simulation loop. We will simulate the passage of time by
     // creating a variable named "time" set to 0, and we will continue simulating
-    // until 100 seconds have passed. Every time we advance the simulation, it will
+    // until 50 seconds have passed. Every time we advance the simulation, it will
     // move forward by only 0.1 seconds (which is the value of delta_time) 
-    for (auto time = double{}; time < 100.0; time += delta_time)
+    for (auto time = double{}; time < 50.0; time += delta_time)
     {
         // Every time we move time forward, we need to move the entities forward through
         // time. Because all of the data is in a vector, we can readily use a for-loop to
