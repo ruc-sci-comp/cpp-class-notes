@@ -107,18 +107,18 @@ auto main() -> int
                 // ball around.
                 v = -velocity_at_impact * coeff_of_restitution;
 
+                // Lastly, we can apply gravity to the ball's velocity.
+                v += acceleration * time_after_bounce;
+
                 // Now that we know how fast the ball is moving after the bounce, we can simply
                 // apply Euler integration here to calculate how high the bounce is.
                 y = v * time_after_bounce;
-
-                // Lastly, we can apply gravity to the ball's velocity.
-                v += acceleration * time_after_bounce;
             }
             else
             {
                 // If we are not bouncing, we can very easily just apply Euler integration.
-                y += v * delta_time;
                 v += acceleration * delta_time;
+                y += v * delta_time;
             }
 
             // Once we have the final y and v values, we just throw them right back into the
