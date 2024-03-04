@@ -7,7 +7,14 @@
             "configurationProvider": "ms-vscode.cmake-tools",
             "includePath": [
                 "/usr/include/c++/10",
-                "/usr/include"
+                "/usr/include",
+                "class-01/**",
+                "class-02/**",
+                "class-03/**",
+                "class-04/**",
+                "class-05/**",
+                "class-06/**",
+                "class-07/**"
             ]
         }
     ],
