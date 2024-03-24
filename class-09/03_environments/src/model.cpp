@@ -3,7 +3,10 @@
 #include <algorithm>
 #include <fstream>
 
-Model::Model(std::filesystem::path configuration_file)
+Model::Model()
+{}
+
+void Model::initialize(std::filesystem::path configuration_file)
 {
     auto cfs = std::ifstream{ configuration_file };
     configuration = json::parse(cfs);
@@ -21,14 +24,12 @@ Model::Model(std::filesystem::path configuration_file)
         };});
 }
 
-void Model::initialize()
-{}
-
 void Model::update(const double time_delta)
 {
+    time += time_delta;
     for (auto& entity : entities)
     {
-        entity.update(time_delta);
+        entity.update(time_delta, environment);
     }
 }
 

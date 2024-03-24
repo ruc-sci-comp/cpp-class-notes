@@ -9,11 +9,12 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(model, m) {
     py::class_<Model>(m, "Model")
-        .def(py::init<std::filesystem::path>())
+        .def(py::init<>())
         .def("initialize", &Model::initialize)
         .def("update", &Model::update)
         .def("finalize", &Model::finalize)
-        .def_readwrite("entities", &Model::entities);
+        .def_readwrite("entities", &Model::entities)
+        .def_readwrite("time", &Model::time);
 
     py::class_<Entity>(m, "Entity")
         .def_readwrite("position", &Entity::position);

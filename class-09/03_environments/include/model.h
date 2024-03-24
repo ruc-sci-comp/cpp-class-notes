@@ -8,14 +8,15 @@
 #include <nlohmann/json.hpp>
 
 #include "entity.h"
+#include "environment.h"
 
 using json = nlohmann::json;
 
 struct Model
 {
-    Model(std::filesystem::path configuration_file);
+    Model();
 
-    void initialize();
+    void initialize(std::filesystem::path configuration_file);
 
     void update(const double time_delta);
 
@@ -23,4 +24,6 @@ struct Model
 
     json configuration{};
     std::vector<Entity> entities{};
+    Environment environment{};
+    double time{};
 };

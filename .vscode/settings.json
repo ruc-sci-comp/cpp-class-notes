@@ -64,5 +64,6 @@
         "valarray": "cpp",
         "variant": "cpp"
     },
-    "C_Cpp.default.cppStandard": "c++20"
+    "C_Cpp.default.cppStandard": "c++20",
+    "remote.autoForwardPortsFallback": 0
 }

@@ -1,7 +1,7 @@
 CXX:=g++
 STD:=-std=c++20
 CFLAGS:=-Wall -Werror -Wextra -Weffc++ -pedantic
-DEFINITIONS:= -DFMT_HEADER_ONLY
+DEFINITIONS:= -DFMT_HEADER_ONLY -fPIC
 OPTIMIZATION_FLAGS:=-O3 -ffast-math
 
 PYTHON:=python3
@@ -13,7 +13,6 @@ LIBOBJ:=$(subst obj/main.o,,${OBJ})
 OBJ:=$(subst obj/dashboard_model.o,,${OBJ})
 
 DEP:=$(SRC:src/%.cpp=dep/%.d)
-TRGT_EXE:=bin/main.exe
 TGRT_DASHBOARD:=dashboard/model$(shell $(PYTHON)-config --extension-suffix)
 
 ifeq ($(SRC),)
@@ -26,11 +25,6 @@ PYTHON_INCLUDES:=$(shell $(PYTHON)-config --includes)
 PYTHON_LIB_DIR:=$(shell $(PYTHON)-config --prefix)/lib
 PYTHON_LIBS:=$(shell $(PYTHON)-config --libs --embed)
 PYTHON_LD_FLAGS:=-Wl,-rpath,$(PYTHON_LIB_DIR) -L$(PYTHON_LIB_DIR) $(PYTHON_LIBS)
-
-$(TRGT_EXE): setup setup_bin $(OBJ)
-	$(CXX) $(OBJ) $(PYTHON_LD_FLAGS) -o $@
-
-dashboard: DEFINITIONS += -fPIC
 
 dashboard: setup $(LIBOBJ) obj/dashboard_model.o
 	$(CXX) $(LIBOBJ) obj/dashboard_model.o $(PYTHON_LD_FLAGS) -shared -o $(TGRT_DASHBOARD)
@@ -52,6 +46,6 @@ obj/%.o: src/%.cpp $(INC)
 	$(CXX) $(STD) $(OPTIMIZATION_FLAGS) $(CFLAGS) $(DEFINITIONS) $(INCLUDES) $(PYTHON_INCLUDES) -MF $(<:src/%.cpp=dep/%.d) -MMD -c $< -o $@
 
 clean:
-	rm -rf obj dep bin lib $(TRGT_EXE) $(TGRT_DASHBOARD) __pycache__ $(HTML)
+	rm -rf obj dep bin lib $(TGRT_DASHBOARD) __pycache__
 
 .PHONY:all dashboard setup clean
