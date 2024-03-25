@@ -1,8 +1,15 @@
 #pragma once
 
-struct Entity;
+#include <array>
 
 struct Environment
 {
-    auto get_modification(const Entity& entity) const->std::array<double, 2>;
+    auto restrict_position(std::array<double, 2>& position) const->void;
+
+    auto reflect(const std::array<double, 2>& position, std::array<double, 2>& velocity) const->void;
+
+    auto get_multiplier(const std::array<double, 2>& position) const->std::array<double, 2>;
+
+    std::array<double, 2> x_limit{ -100, 100 };
+    std::array<double, 2> y_limit{ -100, 100 };
 };

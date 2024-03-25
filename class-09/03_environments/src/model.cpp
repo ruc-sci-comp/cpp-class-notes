@@ -3,11 +3,10 @@
 #include <algorithm>
 #include <fstream>
 
-Model::Model()
-{}
-
 void Model::initialize(std::filesystem::path configuration_file)
 {
+    time = 0.0;
+
     auto cfs = std::ifstream{ configuration_file };
     configuration = json::parse(cfs);
 

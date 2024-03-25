@@ -2,14 +2,13 @@
 #include <pybind11/stl/filesystem.h>
 #include <pybind11/stl.h>
 
-namespace py = pybind11;
-
 #include "model.h"
 #include "entity.h"
+#include "environment.h"
 
 PYBIND11_MODULE(model, m) {
-    py::class_<Model>(m, "Model")
-        .def(py::init<>())
+    pybind11::class_<Model>(m, "Model")
+        .def(pybind11::init<>())
         .def("initialize", &Model::initialize)
         .def("update", &Model::update)
         .def("finalize", &Model::finalize)
@@ -17,6 +16,10 @@ PYBIND11_MODULE(model, m) {
         .def_readwrite("environment", &Model::environment)
         .def_readwrite("time", &Model::time);
 
-    py::class_<Entity>(m, "Entity")
+    pybind11::class_<Entity>(m, "Entity")
         .def_readwrite("position", &Entity::position);
+
+    pybind11::class_<Environment>(m, "Environment")
+        .def_readwrite("x_limit", &Environment::x_limit)
+        .def_readwrite("y_limit", &Environment::y_limit);
 }

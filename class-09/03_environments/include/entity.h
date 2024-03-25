@@ -1,8 +1,8 @@
 #pragma once
 
 #include <array>
+#include "environment.h"
 
-struct Environment;
 struct Entity
 {
     auto update(const double time_delta, const Environment& environment) -> void;

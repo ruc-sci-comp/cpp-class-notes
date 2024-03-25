@@ -9,16 +9,29 @@ import panel as pn
 
 from .model import Model
 
+hv.extension('bokeh')
+pn.extension()
+
 configuration_file = pathlib.Path(__file__).parents[1] / 'data' / 'config.json'
 configuration = json.load(open(configuration_file))
+model_state = Model()
+
+boundaries = (
+    model_state.environment.x_limit[0],
+    model_state.environment.y_limit[0],
+    model_state.environment.x_limit[1],
+    model_state.environment.y_limit[1]
+)
+boundaries = hv.Rectangles(boundaries).opts(fill_color=None, line_color='red')
 
 dfstream = hv.streams.Pipe(data=pd.DataFrame({'x':[], 'y':[]}))
 dmap = hv.DynamicMap(hv.Scatter, streams=[dfstream]).opts(
     height=600,
     width=600
-)
+) * boundaries
 
-model_state = Model()
+
+
 periodic_callback = None
 
 play_button = pn.widgets.Button(name='Play')
@@ -75,7 +88,7 @@ pn.template.FastListTemplate(
     header_background='#DC143C',
     accent_base_color='#708090',
     site="ruc-sci-comp-sim",
-    title="simple-sim v0.2",
+    title="simple-sim v0.3",
     main=[
         dmap
     ],

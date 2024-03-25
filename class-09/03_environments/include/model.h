@@ -14,8 +14,6 @@ using json = nlohmann::json;
 
 struct Model
 {
-    Model();
-
     void initialize(std::filesystem::path configuration_file);
 
     void update(const double time_delta);
