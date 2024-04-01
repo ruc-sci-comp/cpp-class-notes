@@ -1,5 +1,5 @@
 {
-    "number_of_entities": 15000,
+    "number_of_entities": 2000,
     "simulation_end_time": 10.0,
     "delta_time": 0.1
 }

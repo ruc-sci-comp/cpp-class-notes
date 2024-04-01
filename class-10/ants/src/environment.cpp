@@ -21,22 +21,7 @@ auto Environment::reflect(const std::array<double, 2>& position, std::array<doub
     }
 }
 
-auto Environment::get_multiplier(const std::array<double, 2>& position) const->std::array<double, 2>
+auto Environment::get_multiplier(const std::array<double, 2>&) const->std::array<double, 2>
 {
-    if (position[0] > 50 && position[1] > 50)
-    {
-        return { 0.1, 0.1 };
-    }
-    if (position[0] < -50 && position[1] < -50)
-    {
-        return { 10.0, 10.0 };
-    }
-
-    auto distance_to_origin = std::hypot(position[0], position[1]);
-    if (distance_to_origin <= 5.0)
-    {
-        return { -1.0, -1.0 };
-    }
-
     return { 1.0, 1.0 };
 }
