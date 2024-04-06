@@ -24,8 +24,14 @@ boundaries = (
 )
 boundaries = hv.Rectangles(boundaries).opts(fill_color=None, line_color='grey')
 
+def plot(data):
+    entities, food = data
+    entity_plot = hv.Scatter(entities).opts(color='black')
+    food_plot = hv.Scatter(food, kdims=['x'], vdims=['y', 'q']).opts(color='q', alpha='q', size=hv.dim('q') + 1)
+    return entity_plot * food_plot
+
 dfstream = hv.streams.Pipe(data=pd.DataFrame({'x':[], 'y':[]}))
-dmap = (hv.DynamicMap(hv.Scatter, streams=[dfstream]).opts(hv.opts.Scatter(color='black')) * boundaries).opts(
+dmap = (hv.DynamicMap(plot, streams=[dfstream]) * boundaries).opts(
     height=600,
     width=600,
     bgcolor='#5C4033'
@@ -42,8 +48,9 @@ def run_model():
     global global_time
     model_state.update(configuration['delta_time'])
     entities_state = pd.DataFrame([entity.position for entity in model_state.entities], columns=['x', 'y'])
+    food_state = pd.DataFrame([[*food.position, food.quantity] for food in model_state.food], columns=['x', 'y', 'q'])
     time_box.value = f'{model_state.time:.2f}'
-    dfstream.send(entities_state)
+    dfstream.send((entities_state, food_state))
 
 @pn.depends(play_button, watch=True)
 def play(value):
@@ -63,8 +70,9 @@ def reset(value):
     model_state.finalize()
     model_state.initialize(str(configuration_file))
     entities_state = pd.DataFrame([entity.position for entity in model_state.entities], columns=['x', 'y'])
+    food_state = pd.DataFrame([[*food.position, food.quantity] for food in model_state.food], columns=['x', 'y', 'q'])
     time_box.value = f'{model_state.time:.2f}'
-    dfstream.send(entities_state)
+    dfstream.send((entities_state, food_state))
 
 sim_data_card = pn.Card(
     time_box,

@@ -9,6 +9,7 @@
 
 #include "entity.h"
 #include "environment.h"
+#include "food.h"
 
 using json = nlohmann::json;
 
@@ -22,6 +23,7 @@ struct Model
 
     json configuration{};
     std::vector<Entity> entities{};
+    std::vector<Food> food{};
     Environment environment{};
     double time{};
 };

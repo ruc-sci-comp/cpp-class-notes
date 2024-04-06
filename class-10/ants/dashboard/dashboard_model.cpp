@@ -5,6 +5,7 @@
 #include "model.h"
 #include "entity.h"
 #include "environment.h"
+#include "food.h"
 
 PYBIND11_MODULE(model, m) {
     pybind11::class_<Model>(m, "Model")
@@ -14,10 +15,15 @@ PYBIND11_MODULE(model, m) {
         .def("finalize", &Model::finalize)
         .def_readwrite("entities", &Model::entities)
         .def_readwrite("environment", &Model::environment)
+        .def_readwrite("food", &Model::food)
         .def_readwrite("time", &Model::time);
 
     pybind11::class_<Entity>(m, "Entity")
         .def_readwrite("position", &Entity::position);
+
+    pybind11::class_<Food>(m, "Food")
+        .def_readwrite("quantity", &Food::quantity)
+        .def_readwrite("position", &Food::position);
 
     pybind11::class_<Environment>(m, "Environment")
         .def_readwrite("x_limit", &Environment::x_limit)
