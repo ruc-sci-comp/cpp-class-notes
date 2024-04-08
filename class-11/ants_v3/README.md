@@ -53,7 +53,7 @@ Everyone will select one of these and begin working on them, and then we will br
     - [ ] All ants spawn from the ant hill's position
     - [ ] Give the ants a *random direction*, rather than some random speed
     - [ ] Create multiple clusters of food, configurable via JSON
-        - [ ] Use configuration keys `"numer_of_food_piles"` and `"number_of_food_per_pile"`
+        - [ ] Use configuration keys `"number_of_food_piles"` and `"number_of_food_per_pile"`
 - [ ] Update `update`:
     - [ ] Erase from the food vector all food particles that are consumed 
     - [ ] Spawn new ants from the ant hill as needed

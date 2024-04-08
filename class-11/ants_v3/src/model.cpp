@@ -27,7 +27,7 @@ void Model::initialize(std::filesystem::path configuration_file)
         };});
 
 
-    auto number_of_food_piles = configuration["numer_of_food_piles"].get<std::size_t>();
+    auto number_of_food_piles = configuration["number_of_food_piles"].get<std::size_t>();
     auto number_of_food_per_pile = configuration["number_of_food_per_pile"].get<std::size_t>();
     for (auto i = std::size_t{}; i < number_of_food_piles; ++i)
     {
