@@ -31,22 +31,16 @@ boundaries = hv.Rectangles(boundaries).opts(fill_color=None, line_color='grey')
 
 def plot(data):
     anthill, ants, food = data
-    anthill_plot = hv.Scatter(anthill).opts(color='black', size=10)
-    ant_plot = hv.Scatter(ants).opts(color='#2a1e1e', size=5)
+    anthill_plot = hv.Points (anthill).opts(color='black', size=10) * hv.Points (anthill).opts(color='black', alpha=0.25, size=30)
+    ants['m'] = 4
+    ant_plot = hv.VectorField((ants['x'], ants['y'], ants['d'], ants['m'])).opts(color='#2a1e1e', line_width=3, rescale_lengths=False)
     food_plot = hv.Scatter(food, kdims=['x'], vdims=['y', 'q']).opts(color='q', cmap='kgy', size=hv.dim('q') + 1).redim.range(q=(0,10))
-
-    bounds = [
-        -configuration['environment_bounds'],
-        -configuration['environment_bounds'],
-        configuration['environment_bounds'],
-        configuration['environment_bounds']
-    ]
 
     pheremones = model_state.environment.pheremones
     ph0 = pd.DataFrame([[i % length - half, i // length - half, p[0], 0] for i,p in enumerate(pheremones) if p[0] > 0.0], columns=['x', 'y', 'p', 't'])
     ph1 = pd.DataFrame([[i % length - half, i // length - half, p[1], 1] for i,p in enumerate(pheremones) if p[1] > 0.0], columns=['x', 'y', 'p', 't'])
-    pheremones_plot_0 = hv.Scatter(ph0, kdims=['x'], vdims=['y', 'p', 't']).opts(color='blue', alpha='p').redim.range(p=(0.0,1.0))
-    pheremones_plot_1 = hv.Scatter(ph1, kdims=['x'], vdims=['y', 'p', 't']).opts(color='green', alpha='p').redim.range(p=(0.0,1.0))
+    pheremones_plot_0 = hv.Scatter(ph0, kdims=['x'], vdims=['y', 'p', 't']).opts(color='blue', size=7, alpha='p').redim.range(p=(0.0,1.0))
+    pheremones_plot_1 = hv.Scatter(ph1, kdims=['x'], vdims=['y', 'p', 't']).opts(color='green', size=7, alpha='p').redim.range(p=(0.0,1.0))
  
     return anthill_plot * ant_plot * food_plot * pheremones_plot_0 * pheremones_plot_1
 
@@ -54,6 +48,7 @@ dfstream = hv.streams.Pipe(data=pd.DataFrame({'x':[], 'y':[]}))
 dmap = (hv.DynamicMap(plot, streams=[dfstream]) * boundaries).opts(
     height=600,
     width=600,
+    show_grid=True,
     bgcolor='#5C4033'
 )
 
@@ -71,7 +66,7 @@ def run_model():
     global global_time
     model_state.update(configuration['delta_time'])
     anthill_state = pd.DataFrame([model_state.anthill.position] if hasattr(model_state, 'anthill') else None, columns=['x', 'y'])
-    ants_state = pd.DataFrame([ant.position for ant in model_state.ants], columns=['x', 'y'])
+    ants_state = pd.DataFrame([[*ant.position, ant.quantity, ant.direction] for ant in model_state.ants], columns=['x', 'y', 'q', 'd'])
     food_state = pd.DataFrame([[*food.position, food.quantity] for food in model_state.food], columns=['x', 'y', 'q'])
     time_box.value = f'{model_state.time:.2f}'
     ants_counter.value = len(ants_state.index)
@@ -98,7 +93,7 @@ def reset(value):
     configuration = json.load(open(configuration_file))
     model_state.initialize(str(configuration_file))
     anthill_state = pd.DataFrame([model_state.anthill.position] if hasattr(model_state, 'anthill') else None, columns=['x', 'y'])
-    ants_state = pd.DataFrame([ant.position for ant in model_state.ants], columns=['x', 'y'])
+    ants_state = pd.DataFrame([[*ant.position, ant.quantity, ant.direction] for ant in model_state.ants], columns=['x', 'y', 'q', 'd'])
     food_state = pd.DataFrame([[*food.position, food.quantity] for food in model_state.food], columns=['x', 'y', 'q'])
     time_box.value = f'{model_state.time:.2f}'
     ants_counter.value = len(ants_state.index)

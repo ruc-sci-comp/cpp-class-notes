@@ -14,4 +14,5 @@ struct Ant
     double direction = {};
     int quantity{ 0 };
     int capacity{ 5 };
+    int pheremone{ 100 };
 };

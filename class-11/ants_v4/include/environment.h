@@ -9,9 +9,7 @@ struct Environment
 {
     auto update() -> void;
 
-    auto restrict_position(std::array<double, 2>& position) const->void;
-
-    auto reflect(const std::array<double, 2>& position, const double direction) const -> double;
+    auto restrict_position(std::array<double, 2>& position, const double direction) const->double;
 
     auto drop_pheremone(const std::array<double, 2>& position, const int pheremone_type) -> void;
 

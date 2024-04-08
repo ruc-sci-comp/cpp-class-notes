@@ -2,10 +2,8 @@
 #include <cmath>
 #include <numbers>
 #include <random>
-#include <set>
 
 #include <fmt/format.h>
-
 
 #include "ant.h"
 #include "environment.h"
@@ -16,27 +14,32 @@ auto Environment::update()->void
 {
     for (auto& p : pheremones)
     {
-        p[0] = std::max(p[0] - 0.00125, 0.0);
-        p[1] = std::max(p[1] - 0.00125, 0.0);
+        p[0] *= 0.975;
+        p[1] *= 0.975;
     }
-    // std::erase_if(pheremones, [](const auto& f) { return f[0] < 1.0e-8 && f[1] < 1.0e-8; });
 }
 
 
-auto Environment::restrict_position(std::array<double, 2>& position) const->void
+auto Environment::restrict_position(std::array<double, 2>& position, const double direction) const->double
 {
-    position[0] = std::clamp(position[0], x_limit[0], x_limit[1]);
-    position[1] = std::clamp(position[1], y_limit[0], y_limit[1]);
-}
-
-auto Environment::reflect(const std::array<double, 2>& position, const double direction) const->double
-{
-    if (position[0] == x_limit[0] || position[0] == x_limit[1])
+    if (position[0] < x_limit[0])
     {
+        position[0] = x_limit[0] + (x_limit[0] - position[0]);
         return 2.0 * pi - pi - direction;
     }
-    if (position[1] == y_limit[0] || position[1] == y_limit[1])
+    if (position[0] > x_limit[1])
     {
+        position[0] = x_limit[1] - (position[0] - x_limit[1]);
+        return 2.0 * pi - pi - direction;
+    }
+    if (position[1] < y_limit[0])
+    {
+        position[1] = y_limit[0] + (y_limit[0] - position[1]);
+        return 2.0 * pi - direction;
+    }
+    if (position[1] > y_limit[1])
+    {
+        position[1] = y_limit[1] - (position[1] - y_limit[1]);
         return 2.0 * pi - direction;
     }
     return direction;
@@ -50,36 +53,45 @@ auto Environment::drop_pheremone(const std::array<double, 2>& position, const in
 
 auto Environment::get_pheremone_trail(const std::array<double, 2>& position, const double direction, const int pheremone_type) -> double
 {
-    auto w = static_cast<int>(std::lround(x_limit[1] - x_limit[0]));
-    auto h = static_cast<int>(std::lround(y_limit[1] - y_limit[0]));
+    auto w = 100;
+    auto h = 100;
     auto index = get_index_from_position(position);
     auto x = index % w;
     auto y = index / h;
 
-    auto angles = std::vector<double>{};
+    auto new_direction = direction;
+    auto ph = 0.0;
 
-    for (auto i = int{ -5 }; i < 6; ++i)
+    constexpr auto range = int{ 4 };
+    constexpr auto short_range = int{ 1 };
+
+    for (auto i = int{ -range }; i <= range; ++i)
     {
-        for (auto j = int{ -5 }; j < 6; ++j)
+        for (auto j = int{ -range }; j <= range; ++j)
         {
+            if (i == 0 && j == 0)
+            {
+                continue;
+            }
             auto dx = std::clamp(x + i, 0, w - 1);
             auto dy = std::clamp(y + j, 0, h - 1);
             auto di = w * dy + dx;
 
             auto angle_to_cell = std::atan2(dy - y, dx - x);
-            if (std::abs(direction - angle_to_cell) < (45.0 * pi / 180.0))
+            auto angle_offset_deg = std::abs(direction - angle_to_cell) * (180.0 / pi);
+
+            if (angle_offset_deg < 15.0 || (std::abs(i) <= short_range && std::abs(j) <= short_range && angle_offset_deg < 75.0))
             {
-                if (pheremones[di][pheremone_type] > 0.0)
+                if (pheremones[di][pheremone_type] > ph)
                 {
-                    angles.emplace_back(angle_to_cell);
+                    new_direction = angle_to_cell;
+                    ph = pheremones[di][pheremone_type];
                 }
             }
         }
     }
-    if (angles.empty())
-        return direction;
 
-    return angles[std::random_device{}() % angles.size()];
+    return new_direction;
 }
 
 auto Environment::get_index_from_position(const std::array<double, 2>& position) -> int

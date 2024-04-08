@@ -21,6 +21,8 @@ PYBIND11_MODULE(model, m) {
         .def_readwrite("time", &Model::time);
 
     pybind11::class_<Ant>(m, "Ant")
+        .def_readwrite("quantity", &Ant::quantity)
+        .def_readwrite("direction", &Ant::direction)
         .def_readwrite("position", &Ant::position);
 
     pybind11::class_<AntHill>(m, "AntHill")

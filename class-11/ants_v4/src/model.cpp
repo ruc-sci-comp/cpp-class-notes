@@ -20,13 +20,8 @@ void Model::initialize(std::filesystem::path configuration_file)
     anthill.position = { bounds_dis(eng), bounds_dis(eng) };
 
     auto number_of_ants = configuration["number_of_ants"].get<std::size_t>();
-    ants.resize(number_of_ants);
-    std::ranges::generate(ants, [&]() -> Ant {
-        return {
-            anthill.position,
-            pi / 4
-        };});
-
+    ants.reserve(number_of_ants);
+    anthill.quantity = number_of_ants * 100;
 
     auto number_of_food_piles = configuration["numer_of_food_piles"].get<std::size_t>();
     auto number_of_food_per_pile = configuration["number_of_food_per_pile"].get<std::size_t>();
@@ -55,15 +50,12 @@ void Model::update(const double time_delta)
     }
 
     environment.update();
+    if (anthill.spawn_ants(time_delta))
+    {
+        ants.emplace_back(anthill.position, theta_dis(eng));
+    }
 
     std::erase_if(food, [](const auto& f) { return f.quantity == 0; });
-
-    std::generate_n(std::back_inserter(ants), anthill.spawn_ants(), [&]() -> Ant {
-        auto theta = theta_dis(eng);
-        return {
-            anthill.position,
-            theta
-        };});
 }
 
 void Model::finalize()
