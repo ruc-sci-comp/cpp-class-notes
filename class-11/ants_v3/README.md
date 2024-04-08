@@ -14,11 +14,9 @@ Starting with the simulation code from class-09, we spent class-10 turning it in
 
 ## What's New
 
-Some changes have been applied to the code:
+Some changes have been applied to the code that make it a little less abstract:
 
 * Renamed the `Entity` class to `Ant`
-* Removed log function from `Ant`
-* Moved all random number generators and distributions to the top of `Model::update`
 
 ## What's Next
 

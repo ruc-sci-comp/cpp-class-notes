@@ -42,8 +42,3 @@ auto Ant::update(const double time_delta, const Environment& environment, std::v
         environment.reflect(position, velocity);
     }
 }
-
-auto Ant::log(const double time) -> void
-{
-    fmt::print("{:.2f},{:.2f},{:.2f}\n", time, position[0], position[1]);
-}

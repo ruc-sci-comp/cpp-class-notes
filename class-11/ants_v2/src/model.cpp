@@ -13,26 +13,24 @@ void Model::initialize(std::filesystem::path configuration_file)
     auto cfs = std::ifstream{ configuration_file };
     configuration = json::parse(cfs);
 
-    auto number_of_ants = configuration["number_of_ants"].get<std::size_t>();
-    ants.resize(number_of_ants);
-
     auto eng = std::mt19937{ 1337 };
     auto dis = std::uniform_real_distribution<>{ -10, 10 };
+    auto radius_dis = std::uniform_real_distribution<>{ 0.0, 1.0 };
+    auto theta_dis = std::uniform_real_distribution<>{ 0.0, 2.0 * pi };
+    auto food_dis = std::uniform_real_distribution<>{ -100, 100 };
 
+    auto number_of_ants = configuration["number_of_ants"].get<std::size_t>();
+    ants.resize(number_of_ants);
     std::ranges::generate(ants, [&]() -> Ant {
         return {
             {dis(eng), dis(eng)},
             {dis(eng), dis(eng)}
         };});
 
-    auto food_dis = std::uniform_real_distribution<>{ -100, 100 };
     auto food_center = std::array<double, 2>{
         food_dis(eng),
             food_dis(eng)
     };
-
-    auto radius_dis = std::uniform_real_distribution<>{ 0.0, 1.0 };
-    auto theta_dis = std::uniform_real_distribution<>{ 0.0, 2.0 * pi };
 
     auto number_of_food = configuration["number_of_food"].get<std::size_t>();
     food.resize(number_of_food);

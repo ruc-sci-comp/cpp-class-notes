@@ -2,15 +2,16 @@
 
 #include <array>
 #include <vector>
+#include "anthill.h"
 #include "environment.h"
 #include "food.h"
 
 struct Ant
 {
-    auto update(const double time_delta, const Environment& environment, std::vector<Food>& food) -> void;
+    auto update(const double time_delta, Environment& environment, AntHill& anthill, std::vector<Food>& food) -> void;
 
     std::array<double, 2> position{};
-    std::array<double, 2> velocity{};
+    double direction = {};
     int quantity{ 0 };
     int capacity{ 5 };
 };
