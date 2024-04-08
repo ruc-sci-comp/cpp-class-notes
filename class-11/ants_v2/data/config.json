@@ -1,5 +1,6 @@
 {
     "delta_time": 0.25,
     "number_of_ants": 2000,
-    "number_of_food": 250
+    "number_of_food": 250,
+    "environment_bounds": 100
 }

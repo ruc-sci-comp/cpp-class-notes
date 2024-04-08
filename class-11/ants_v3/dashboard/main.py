@@ -109,7 +109,7 @@ pn.template.FastListTemplate(
     header_background='#DC143C',
     accent_base_color='#708090',
     site="ruc-sci-comp-sim",
-    title="foraging critters",
+    title="Ants",
     main=[
         dmap
     ],
