@@ -23,8 +23,6 @@ void Model::update(const double time_delta)
     {
         projectile.update(time_delta, environment);
     }
-
-    simulation_complete = std::ranges::all_of(projectiles, [](const auto& projectile) { return projectile.position[1] <= 0.0; });
 }
 
 void Model::finalize()
