@@ -8,7 +8,7 @@
             "includePath": [
                 "/usr/include/c++/10/**",
                 "/usr/include",
-                "class-11/ants_v2/**"
+                "class-12/**"
             ]
         }
     ],
