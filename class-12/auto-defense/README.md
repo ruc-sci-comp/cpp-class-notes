@@ -64,4 +64,13 @@ These changes should give us sufficient randomness in our trajectories.
 
 ## Monte Carlo Model
 
-Now we need to provide the mechanisms for running our simulations MANY times! This requires us to wrap our model in a new class `MonteCarloModel` that will be responsible for creating `Model` objects and running them to completion.
+Now we need to provide the mechanisms for running our simulations MANY times! This requires us to wrap our model in a new class `MonteCarloModel` that will be responsible for creating `Model` objects and running them to completion. We need to do the following:
+
+- [ ] Let's create new files `mc_model.h` and `mc_model.cpp` so that we can begin defining the class `MonteCarloModel`
+    - [ ] Our class is fairly simple, it needs to define the following:
+        - [ ] `execute_full_set` - a function that takes in a number of iterations of the model to execute, and then uses a for-loop to call `execute_model` repeatedly
+        - [ ] `execute_model` - a function that create, initializes, runs, and finalizes a model with the given Monte Carlo number (which we can use for the seed!)
+        - [ ] `clear` - clears the `mc_data` data map
+        - [ ] `mc_data` - a `std::map` that associates MC numbers to projectile data. This acts as a HUGE data buffer in memory!
+
+Once we implement this class, we can run a new dashboard to visualize a large number of randomized trajectory data!
