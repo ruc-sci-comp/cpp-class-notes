@@ -11,5 +11,5 @@ struct Projectile
     std::array<double, 2> position{};
     std::array<double, 2> velocity{};
     double mass{ 19.0 };
-    double radius{ 0.17 };
+    double radius{ 0.085 };
 };

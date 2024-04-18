@@ -32,7 +32,7 @@ dmap = (hv.DynamicMap(plot, streams=[dfstream])).opts(
 
 periodic_callback = None
 
-mc_count_input = pn.widgets.IntInput(name='Number of Monte Carlo Iterations', start=1, end=100, value=50)
+mc_count_input = pn.widgets.IntInput(name='Number of Monte Carlo Iterations', start=1, end=1000, value=50)
 play_button = pn.widgets.Button(name='Play')
 reset_button = pn.widgets.Button(name='Reset')
 fps_input = pn.widgets.IntSlider(name='FPS', start=1, end=30, step=1, value=30)
