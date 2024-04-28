@@ -16,8 +16,8 @@ This repository contains all of the notes distributed throughout the semester. T
 * `Class-10` - Behaviors & Interactions, Ants Project
 * `Class-11` - Continuing Ants Project
 * `Class-12` - Automated Defense System Project
-* `Class-13` - ...
-* `Class-14` - ...
+* `Class-13` - Continuing Automated Defense System Project
+* `Class-14` - Multithreading, N-body Problem
 
 ## Usage
 
