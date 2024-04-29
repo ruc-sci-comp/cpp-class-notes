@@ -7,3 +7,5 @@
 *.a
 *.lib
 *.dll
+*.pyc
+__pycache__

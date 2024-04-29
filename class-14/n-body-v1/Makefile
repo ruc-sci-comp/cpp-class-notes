@@ -29,7 +29,7 @@ PYTHON_LD_FLAGS:=-Wl,-rpath,$(PYTHON_LIB_DIR) -L$(PYTHON_LIB_DIR) $(PYTHON_LIBS)
 
 dashboard: setup $(LIBOBJ) obj/pymodel.o
 	$(CXX) $(LIBOBJ) obj/pymodel.o $(PYTHON_LD_FLAGS) -shared -o $(TGRT_DASHBOARD)
-	python -m dashboard
+	panel serve dashboard
 
 setup:
 	@mkdir -p obj

@@ -7,7 +7,7 @@ class LivePlayer(Viewer):
         self.play_button = pn.widgets.Button(name='Play', button_type="success", width=140)
         self.reset_button = pn.widgets.Button(name='Reset', button_type="success", width=140)
 
-        self.fps_input = pn.widgets.IntSlider(name='FPS', start=1, end=30, step=1, value=30)
+        self.fps_input = pn.widgets.IntSlider(name='FPS', start=1, end=25, step=1, value=25)
         self.play_cb = play_cb
         self.reset_cb = reset_cb
         self.periodic_callback = None
