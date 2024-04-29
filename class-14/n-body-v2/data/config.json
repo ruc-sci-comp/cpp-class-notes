@@ -1,0 +1,7 @@
+{
+    "delta_time": 1.0,
+    "seed": 1337,
+    "bounds": 100,
+    "number_of_entities": 1000,
+    "number_of_threads": 4
+}
