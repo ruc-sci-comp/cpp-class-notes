@@ -75,14 +75,16 @@ auto main() -> int
             // This is where things get tricky. In order for us to simulate the bounce, we need
             // to ensure that the ball does not go through the ground. Since the balls will be
             // incrementally moving, it is very possible that an increment would make its altitude
-            // (the y-coordinate of position) less than 0. Therefore, we first need to calcuate
-            // how far down the ball is falling - our delta y, or just dy.
-            auto dy = v * delta_time;
+            // (the y-coordinate of the position) less than 0. Therefore, we first need to propagate
+            // the ball downward so we can test if it's altitude would have been negative on the
+            // next time step.
+            auto v_bounce_test = v + acceleration * delta_time;
+            auto y_bounce_test = y + v_bounce_test * delta_time;
 
-            // We need to check if the new position (y plus dy) is at or under ground. If it then
+            // We need to check if the new test position is at or under ground. If it is then
             // we need to make sure that the collision with the ground is simulated properly. So
             // if we anticipate falling through the ground (which we cannot do!)...
-            if (y + dy <= 0.0)
+            if (y_bounce_test <= 0.0)
             {
                 // We need to figure out how long it will take to hit the ground from the current
                 // position. We know how high the ball is and how fast it is moving, so dividing
@@ -119,6 +121,15 @@ auto main() -> int
                 // If we are not bouncing, we can very easily just apply Euler integration.
                 v += acceleration * delta_time;
                 y += v * delta_time;
+            }
+
+            // Here we apply a correction factor to account for the messiness of numerical
+            // integration. Due to small errors, we might end up with small valued negative
+            // altitude. This will lead to an invalid bounce calculation which can make it
+            // appear that the ball falls through the floor!
+            if (y < 0)
+            {
+                y = 0;
             }
 
             // Once we have the final y and v values, we just throw them right back into the
