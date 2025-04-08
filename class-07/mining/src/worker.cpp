@@ -1,11 +1,13 @@
-auto work(Mineral &mineral) -> void {
-    //once the entity is close enough and the thing has minerals, they call work()
-    int request_amount = worker.capacity - worker.units;
+#include "worker.h" 
 
-    if (mine.units > 0) 
+auto Worker::work(Mineral& mineral) -> void {
+    //once the entity is close enough and the thing has minerals, they call work()
+    auto request_amount = int {Worker.capacity - Worker.units};
+
+    if (mine.units > 0)
     {
-        int amount_available = mineral.mine(request_amount); //can exceed the amount available but this will be handled seperately
-        worker.units += amount_available;
+        auto amount_available = int {mineral.mine(request_amount)}; //can exceed the amount available but this will be handled seperately
+        Worker.units += amount_available;
     }
 
     return;
