@@ -10,3 +10,5 @@ struct Mineral
     double position_y{ 0.0 };
     int units{ 100 };
 };
+
+
