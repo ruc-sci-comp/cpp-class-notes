@@ -28,3 +28,25 @@ auto Worker::update(Mineral& mineral) -> void
 		move(0, 0, 1.0);
 	}
 }
+
+auto Worker::work(Mineral& mineral) -> void
+{
+    auto requested_minerals = std::min(1, capacity - units);
+    auto units_mined = mineral.mine(requested_minerals);
+    units += units_mined;
+}
+
+auto Worker::is_empty() -> bool
+{
+    return units == 0;
+}
+
+auto Worker::is_full() -> bool
+{
+    return units == capacity;
+}
+
+auto Worker::is_close_to_mineral(const Mineral& mineral) -> bool
+{
+    return std::hypot(mineral.position_x - position_x, mineral.position_y - position_y) < 1.0;
+}
