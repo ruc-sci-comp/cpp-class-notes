@@ -2,12 +2,13 @@
     "configurations": [
         {
             "name": "Linux",
-            "compilerPath": "/usr/bin/g++-10",
+            "compilerPath": "/usr/bin/g++-12",
             "cppStandard": "c++20",
             "configurationProvider": "ms-vscode.cmake-tools",
             "includePath": [
-                "/usr/include/c++/10/**",
+                "/usr/include/c++/12/**",
                 "/usr/include",
+                "class-07/mining/**",
                 "class-14/n-body-v1/**"
             ]
         }
